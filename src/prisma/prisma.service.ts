@@ -13,9 +13,11 @@ export class PrismaService
   }
 
   onModuleInit() {
-    return this.$connect(); //metodos do nest para quando o modulo que chama o serviço iniciar
+    //metodos do nest para quando o modulo que chama o serviço iniciar
+    return this.$connect(); //conecta com o prisma
   }
   onModuleDestroy() {
-    return this.$disconnect(); //metodos do nest para quando o modulo que chama o serviço terminar
+    //metodos do nest para quando o modulo que chama o serviço terminar
+    return this.$disconnect(); //fecha conexao com o prisma
   }
 }
