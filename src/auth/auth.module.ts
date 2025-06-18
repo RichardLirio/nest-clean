@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { PassportModule } from "@nestjs/passport";
 import { Env } from "src/env";
+import { JwtStrategy } from "./jwt.strategy";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { Env } from "src/env";
         return {
           signOptions: {
             algorithm: "RS256", //algoritimo usado para gerar as chaves
+            expiresIn: "24h",
           },
           privateKey: Buffer.from(privateKey, "base64"), //buffer da chave privada
           publicKey: Buffer.from(publicKey, "base64"), //buffer da chave publica
@@ -24,5 +26,6 @@ import { Env } from "src/env";
       },
     }),
   ],
+  providers: [JwtStrategy],
 })
 export class AuthModule {}

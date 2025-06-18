@@ -5,6 +5,7 @@ import { CreateAccountController } from "./controllers/create-account.controller
 import { envSchema } from "./env";
 import { AuthModule } from "./auth/auth.module";
 import { AuthenticateController } from "./controllers/authenticate.controller";
+import { CreateQuestionController } from "./controllers/create-question.controller";
 
 @Module({
   imports: [
@@ -14,7 +15,11 @@ import { AuthenticateController } from "./controllers/authenticate.controller";
     }),
     AuthModule,
   ], //modulo importado dentro de outro modulo, como precisa de configuração, utiliza o forRoot()
-  controllers: [CreateAccountController, AuthenticateController], //tudo que recebe requisições, comunicação http
+  controllers: [
+    CreateAccountController,
+    AuthenticateController,
+    CreateQuestionController,
+  ], //tudo que recebe requisições, comunicação http
   providers: [PrismaService], //o resto é provider, modulos ou classes injetaveis dentro dos controllers
 })
 export class AppModule {}
