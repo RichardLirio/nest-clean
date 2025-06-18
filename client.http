@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
     "name":"Richard Lirio",
-    "email": "richard@hotmail.com",
+    "email": "richardTeste@hotmail.com",
     "password": "123456"
 }
 
@@ -28,4 +28,9 @@ Content-Type: application/json
 POST {{baseUrl}}/questions
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+{
+    "tittle": "Nova pergunta",
+    "content": "Conteúdo da pergunta"
+}
 

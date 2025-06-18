@@ -5,11 +5,11 @@ import { Env } from "src/env";
 import { ConfigService } from "@nestjs/config";
 import { z } from "zod";
 
-const tokenSchema = z.object({
+const tokenPayloadSchema = z.object({
   sub: z.string().uuid(),
 });
 
-export type TokenSchema = z.infer<typeof tokenSchema>;
+export type UserPayload = z.infer<typeof tokenPayloadSchema>;
 
 @Injectable() //TODA CLASSE PROVIDER PRECISA DO INJECTABLE
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -24,8 +24,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: TokenSchema) {
+  async validate(payload: UserPayload) {
     //validar o payload do token se possui os campos criados
-    return tokenSchema.parse(payload); //realza o parse e verifica se bate
+    return tokenPayloadSchema.parse(payload); //realza o parse e verifica se bate
   }
 }
