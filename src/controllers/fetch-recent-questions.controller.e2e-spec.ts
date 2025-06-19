@@ -13,12 +13,13 @@ describe("Fetch recent questions (E2E)", () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile(); //compila/roda aplicação somente de forma programatica para os testes
+    }).compile();
 
     app = moduleRef.createNestApplication();
 
     prisma = moduleRef.get(PrismaService);
     jwt = moduleRef.get(JwtService);
+
     await app.init();
   });
 
@@ -29,26 +30,38 @@ describe("Fetch recent questions (E2E)", () => {
         email: "johndoe@example.com",
         password: "123456",
       },
-    }); //criando usuario antes de realizar o login
+    });
 
     const accessToken = jwt.sign({ sub: user.id });
+
+    await prisma.question.createMany({
+      data: [
+        {
+          tittle: "Question 01",
+          slug: "question-01",
+          content: "Question content",
+          authorId: user.id,
+        },
+        {
+          tittle: "Question 02",
+          slug: "question-02",
+          content: "Question content",
+          authorId: user.id,
+        },
+      ],
+    });
 
     const response = await request(app.getHttpServer())
       .get("/questions")
       .set("Authorization", `Bearer ${accessToken}`)
-      .send({
-        tittle: "New question",
-        content: "Question content",
-      });
+      .send();
 
-    expect(response.statusCode).toBe(201); //status code esperado no retorno da rota de criação de usuario
-
-    const questionOnDatabase = prisma.question.findFirst({
-      where: {
-        tittle: "New question",
-      },
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      questions: [
+        expect.objectContaining({ tittle: "Question 01" }),
+        expect.objectContaining({ tittle: "Question 02" }),
+      ],
     });
-
-    expect(questionOnDatabase).toBeTruthy(); //verifica dentro do banco de dados se o usuario foi criado
   });
 });

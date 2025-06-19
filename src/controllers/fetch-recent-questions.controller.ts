@@ -22,7 +22,7 @@ export class FetchRecentQuestionsController {
 
   @Get()
   async handle(@Query("page", queryValidationPipe) page: PageQueryParamSchema) {
-    const perPage = 1; //itens por pagina
+    const perPage = 20; //itens por pagina
 
     const questions = await this.prisma.question.findMany({
       take: perPage,
